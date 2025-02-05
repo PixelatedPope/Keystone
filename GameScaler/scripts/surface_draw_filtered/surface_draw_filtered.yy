@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"surface_draw_filtered",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"surface_draw_filtered",
+  "parent":{
+    "name":"GameScaler",
+    "path":"GameScaler.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

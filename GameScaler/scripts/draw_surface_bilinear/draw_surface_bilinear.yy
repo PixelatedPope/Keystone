@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"draw_surface_bilinear",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"draw_surface_bilinear",
+  "parent":{
+    "name":"GameScaler",
+    "path":"GameScaler.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

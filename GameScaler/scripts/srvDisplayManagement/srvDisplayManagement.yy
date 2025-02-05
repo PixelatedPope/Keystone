@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"srvDisplayManagement",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"srvDisplayManagement",
+  "parent":{
+    "name":"GameScaler",
+    "path":"GameScaler.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
