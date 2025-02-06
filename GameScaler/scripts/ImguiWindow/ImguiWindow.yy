@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"ImguiWindow",
   "parent":{
-    "name":"GameScaler",
-    "path":"GameScaler.yyp",
+    "name":"ImGui_GM",
+    "path":"folders/ImGui_GM.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

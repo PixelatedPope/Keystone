@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"libKeystone",
   "parent":{
-    "name":"GameScaler",
-    "path":"GameScaler.yyp",
+    "name":"Keystone",
+    "path":"folders/Keystone.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -3,8 +3,8 @@
   "%Name":"shd_bilinear",
   "name":"shd_bilinear",
   "parent":{
-    "name":"GameScaler",
-    "path":"GameScaler.yyp",
+    "name":"Keystone",
+    "path":"folders/Keystone.yy",
   },
   "resourceType":"GMShader",
   "resourceVersion":"2.0",

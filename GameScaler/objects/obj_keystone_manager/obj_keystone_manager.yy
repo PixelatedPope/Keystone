@@ -14,8 +14,8 @@
   "name":"obj_keystone_manager",
   "overriddenProperties":[],
   "parent":{
-    "name":"GameScaler",
-    "path":"GameScaler.yyp",
+    "name":"Keystone",
+    "path":"folders/Keystone.yy",
   },
   "parentObjectId":null,
   "persistent":true,
