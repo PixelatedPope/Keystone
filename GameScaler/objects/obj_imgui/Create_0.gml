@@ -28,7 +28,7 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
       imgui_row("App Surf", $"{KEYSTONE_APP_SURF_W}",$"{KEYSTONE_APP_SURF_H}");
       var _max = KEYSTONE_SETTINGS.resolution_max;
       if(_max == infinity){
-        var _factor = min(display_get_width() div KEYSTONE_BASE_W, display_get_height() div KEYSTONE_BASE_H)
+        var _factor = min(KEYSTONE_DISP_W div KEYSTONE_BASE_W, KEYSTONE_DISP_H div KEYSTONE_BASE_H)
         imgui_row("Max App Surf", $"{KEYSTONE_BASE_W * _factor}",$"{KEYSTONE_BASE_H * _factor}");
       } else {
         imgui_row("Max App Surf", $"{KEYSTONE_BASE_W * _max}",$"{KEYSTONE_BASE_H * _max}");
@@ -49,13 +49,13 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
     var _new_index = imgui_combo($"Window Scale", _scales, _index)
     if (_index != _new_index){
       KEYSTONE_SETTINGS.window_scale = _new_index;
-      display_update_window_scale();
+      keystone_update_window_scale();
     }
     imgui_end_disabled()
     
     //Resolution
     var _res = ["Auto Max"]
-    for(var _i = 0; _i < display_get_max_element_scale(); _i++){
+    for(var _i = 0; _i < keystone_get_max_element_scale(); _i++){
       array_push(_res, $"{KEYSTONE_BASE_W * (_i+1)} x {KEYSTONE_BASE_H * (_i+1)}");
     }
     var _index =  min(array_length(_res) - 1, KEYSTONE_SETTINGS.resolution)
@@ -63,14 +63,14 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
     var _new_index = imgui_combo($"Resolution", _res, _index)
     if (_index != _new_index){
       KEYSTONE_SETTINGS.resolution = _new_index
-      display_update_resolution();
+      keystone_update_resolution();
     }
     
     //GUI Scale
-    var _new_scale = imgui_slider_float("GUI Scale", min(KEYSTONE_SETTINGS.gui_scale,  display_get_max_element_scale()), 1, display_get_max_element_scale())
+    var _new_scale = imgui_slider_float("GUI Scale", min(KEYSTONE_SETTINGS.gui_scale,  keystone_get_max_element_scale()), 1, keystone_get_max_element_scale())
     if(_new_scale != KEYSTONE_SETTINGS.gui_scale){
       KEYSTONE_SETTINGS.gui_scale = _new_scale
-      display_update_gui_scale();  
+      keystone_update_gui_scale();  
     }
     
     //Fullscreen
@@ -78,7 +78,7 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
     var _checked = imgui_checkbox("Fullscreen", _prev)
     if(_prev != _checked){
       KEYSTONE_SETTINGS.is_fullscreen = _checked;
-      display_update_fullscreen()
+      keystone_update_fullscreen()
     }
     
     //Borderless
@@ -87,7 +87,7 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
     if(_prev != _checked){
       KEYSTONE_SETTINGS.is_borderless = _checked;
       window_set_showborder(!_checked)
-      display_update_borderless();
+      keystone_update_borderless();
     }
     
     //Perfect

@@ -79,18 +79,18 @@ function keystone_get_max_window_scale(){
   return min(_min_w, _min_h);
 }
 
-function display_get_max_element_scale(){
+function keystone_get_max_element_scale(){
   return min(KEYSTONE_WIN_W div KEYSTONE_BASE_W, KEYSTONE_WIN_H div KEYSTONE_BASE_H)
 }
 
-function display_get_mouse(_device = 0){
+function keystone_get_mouse(_device = 0){
   var _pos;
   var _mouse_x = device_mouse_raw_x(0);
   var _mouse_y = device_mouse_raw_y(0);
   if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.is_perfect_scale)
-    _pos = __display_calculate_app_surf_perfect_render_position();
+    _pos = __keystone_calculate_app_surf_perfect_render_position();
   else
-    _pos = __display_calculate_app_surf_position();
+    _pos = __keystone_calculate_app_surf_position();
   
   return {
     x: lerp(KEYSTONE_VIEW_X, KEYSTONE_VIEW_R, __position_between(_mouse_x, _pos.x1, _pos.x2)),
@@ -98,14 +98,14 @@ function display_get_mouse(_device = 0){
   }
 }
 
-function display_get_mouse_gui(_device = 0){
+function keystone_get_mouse_gui(_device = 0){
   var _pos;
   var _mouse_x = device_mouse_raw_x(0);
   var _mouse_y = device_mouse_raw_y(0);
   if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.is_perfect_scale)
-    _pos = __display_calculate_app_surf_perfect_render_position();
+    _pos = __keystone_calculate_app_surf_perfect_render_position();
   else
-    _pos = __display_calculate_app_surf_position();
+    _pos = __keystone_calculate_app_surf_position();
   
   return {
     x: lerp(0, KEYSTONE_GUI_W, __position_between(_mouse_x, _pos.x1, _pos.x2)),
@@ -116,25 +116,25 @@ function display_get_mouse_gui(_device = 0){
 #endregion
 
 #region UPDATERS
-function display_update_base_size(_w, _h){
+function keystone_update_base_size(_w, _h){
     KEYSTONE_SETTINGS.base_width = _w;
     KEYSTONE_SETTINGS.base_height = _h;
-    display_update_resolution()
-    display_update_window_scale()
-    display_update_gui_scale()
+    keystone_update_resolution()
+    keystone_update_window_scale()
+    keystone_update_gui_scale()
 }
 
-function display_update_fullscreen(){
+function keystone_update_fullscreen(){
   if(!KEYSTONE_SETTINGS.is_borderless)
     window_set_fullscreen(KEYSTONE_SETTINGS.is_fullscreen);  
   
   call_later(.25, time_source_units_seconds, function(){
-    display_update_window_scale();
+    keystone_update_window_scale();
   })
 }
 
 
-function display_update_borderless(){
+function keystone_update_borderless(){
   window_set_showborder(!KEYSTONE_SETTINGS.is_borderless);  
   if(KEYSTONE_SETTINGS.is_fullscreen){
     if(KEYSTONE_SETTINGS.is_borderless){
@@ -146,11 +146,11 @@ function display_update_borderless(){
       window_set_fullscreen(true); 
     }
   } else {
-    display_update_window_scale()
+    keystone_update_window_scale()
   }
 }
 
-function display_update_gui_scale(){
+function keystone_update_gui_scale(){
   var _scale = KEYSTONE_SETTINGS.gui_scale;
   _scale = clamp(_scale, 1, keystone_get_max_window_scale());
   if(KEYSTONE_BASE_W * _scale == KEYSTONE_GUI_W && KEYSTONE_BASE_H * _scale == KEYSTONE_GUI_H) return;
@@ -161,7 +161,7 @@ function display_update_gui_scale(){
   global.__keystone_gui_surf = surface_create(KEYSTONE_GUI_W, KEYSTONE_GUI_H);
 }
 
-function display_update_resolution(){
+function keystone_update_resolution(){
   var _scale = KEYSTONE_SETTINGS.resolution;
   if(_scale == 0) _scale = keystone_get_max_window_scale()
   _scale = clamp(_scale, 1, KEYSTONE_SETTINGS.resolution_max);
@@ -170,30 +170,30 @@ function display_update_resolution(){
   surface_resize(KEYSTONE_APP_SURF, _w, _h);
 }
 
-function display_update_window_scale(){
+function keystone_update_window_scale(){
   if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.is_borderless) {
     window_set_rectangle(0, 0, KEYSTONE_DISP_W, KEYSTONE_DISP_H)
     return;
   }
   var _scale = __calculate_max_window_scale()
   window_set_size(KEYSTONE_BASE_W * _scale, KEYSTONE_BASE_H * _scale);
-  display_update_resolution();
-  display_update_gui_scale();
+  keystone_update_resolution();
+  keystone_update_gui_scale();
   window_center();
 }
 #endregion
 
 #region Display Manager Event Functions
-function display_create(_settings){
+function keystone_create(_settings){
   global.__keystone_settings = _settings
   application_surface_draw_enable(false);
-  display_update_base_size(_settings.base_width, _settings.base_height)
+  keystone_update_base_size(_settings.base_width, _settings.base_height)
 
-  display_update_borderless()
-  display_update_fullscreen()  
+  keystone_update_borderless()
+  keystone_update_fullscreen()  
 }
 
-function display_draw_gui_begin(){
+function keystone_draw_gui_begin(){
   if(!surface_exists(global.__keystone_gui_surf)){
     global.__keystone_gui_surf = surface_create(KEYSTONE_GUI_W, KEYSTONE_GUI_H);
   }
@@ -203,35 +203,35 @@ function display_draw_gui_begin(){
   camera_apply(global.__keystone_gui_cam); //NOTE: If at any time in any draw gui event you change render targets (surface_set_target), you will need to call this line again
 }
 
-function display_post_draw(){
+function keystone_post_draw(){
   if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.should_show_fullscreen_mat){
     var _scale = KEYSTONE_WIN_W / sprite_get_width(spr_fullscreen_mat)
     draw_sprite_ext(spr_fullscreen_mat, 0, KEYSTONE_WIN_W / 2, KEYSTONE_WIN_H / 2, _scale, 1, 0, c_white, 1);  
   }
 
   if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.is_perfect_scale){
-    var _pos = __display_calculate_app_surf_perfect_render_position();
+    var _pos = __keystone_calculate_app_surf_perfect_render_position();
     draw_surface_stretched(KEYSTONE_APP_SURF, _pos.x1, _pos.y1, _pos.w, _pos.h);
   } else {
     __surface_draw_filtered(KEYSTONE_APP_SURF,KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.enable_filtering)
   }
 }
 
-function display_draw_gui_end(){
+function keystone_draw_gui_end(){
   surface_reset_target();
 
   if(!surface_exists(global.__keystone_gui_surf)) exit;
 
   display_set_gui_maximize();
   if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.is_perfect_scale){
-    var _pos = __display_calculate_app_surf_perfect_render_position();
+    var _pos = __keystone_calculate_app_surf_perfect_render_position();
     draw_surface_stretched(global.__keystone_gui_surf, _pos.x1, _pos.y1, _pos.w, _pos.h);
   } else {
     __surface_draw_filtered(global.__keystone_gui_surf, KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.enable_filtering)
   }  
 }
 
-function display_room_start(){
+function keystone_room_start(){
   view_enabled = true;
   view_visible[0] = true;
   camera_set_view_target(KEYSTONE_VIEW, noone);
@@ -240,7 +240,7 @@ function display_room_start(){
 #endregion
 
 #region Internal Helpers
-function __display_calculate_app_surf_perfect_render_position(){
+function __keystone_calculate_app_surf_perfect_render_position(){
   var _scale = KEYSTONE_WIN_H div KEYSTONE_BASE_H;
   var _w = KEYSTONE_BASE_W * _scale;
   var _h = KEYSTONE_BASE_H * _scale;
@@ -259,7 +259,7 @@ function __display_calculate_app_surf_perfect_render_position(){
   }
 }
 
-function __display_calculate_app_surf_position(){
+function __keystone_calculate_app_surf_position(){
   var _scale = min(KEYSTONE_WIN_W / KEYSTONE_APP_SURF_W, KEYSTONE_WIN_H / KEYSTONE_APP_SURF_H);
   var _x = KEYSTONE_WIN_W / 2 - KEYSTONE_APP_SURF_W * _scale * .5;
   var _y = KEYSTONE_WIN_H / 2 - KEYSTONE_APP_SURF_H * _scale * .5;  

@@ -9,5 +9,5 @@ draw_sprite_ext(spr_trials_ui, 1, KEYSTONE_GUI_W - _xoff - _margin, _yoff + _mar
 draw_sprite_ext(spr_trials_ui, 2, KEYSTONE_GUI_W / 2, KEYSTONE_GUI_H - _yoff - 1 - _margin, 1, 1, 0, c_white, sin_oscillate(0, 1, 5));
 
 
-var _pos = display_get_mouse_gui()
+var _pos = keystone_get_mouse_gui()
 draw_sprite_ext(spr_target, 1, _pos.x, _pos.y,1,1,0,c_white,sin_oscillate(0,1,3));
