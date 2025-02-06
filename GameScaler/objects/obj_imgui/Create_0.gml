@@ -41,7 +41,7 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
     //Window Scale
     imgui_begin_disabled(KEYSTONE_SETTINGS.is_fullscreen)
     var _scales = ["Auto Max"]
-    for(var _i = 1; _i <= display_get_max_window_scale(); _i++)
+    for(var _i = 1; _i <= keystone_get_max_window_scale(); _i++)
       array_push(_scales, _i);
       
     var _index =  min(array_length(_scales) - 1, KEYSTONE_SETTINGS.window_scale)
@@ -55,7 +55,7 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
     
     //Resolution
     var _res = ["Auto Max"]
-    for(var _i = 0; _i < display_get_max_window_scale(); _i++){
+    for(var _i = 0; _i < display_get_max_element_scale(); _i++){
       array_push(_res, $"{KEYSTONE_BASE_W * (_i+1)} x {KEYSTONE_BASE_H * (_i+1)}");
     }
     var _index =  min(array_length(_res) - 1, KEYSTONE_SETTINGS.resolution)
@@ -67,7 +67,7 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
     }
     
     //GUI Scale
-    var _new_scale = imgui_slider_float("GUI Scale", KEYSTONE_SETTINGS.gui_scale, 1, display_get_current_window_scale())
+    var _new_scale = imgui_slider_float("GUI Scale", min(KEYSTONE_SETTINGS.gui_scale,  display_get_max_element_scale()), 1, display_get_max_element_scale())
     if(_new_scale != KEYSTONE_SETTINGS.gui_scale){
       KEYSTONE_SETTINGS.gui_scale = _new_scale
       display_update_gui_scale();  
@@ -91,14 +91,16 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
     }
     
     //Perfect
-    imgui_begin_disabled(!KEYSTONE_SETTINGS.is_fullscreen)
+    imgui_begin_disabled(keystone_is_inherently_perfectly_scaled())
     var _prev = KEYSTONE_SETTINGS.is_perfect_scale
     var _checked = imgui_checkbox("Perfect Scaling", _prev)
     if(_prev != _checked){
       KEYSTONE_SETTINGS.is_perfect_scale = _checked;
     }
+    imgui_end_disabled()
     
     //Fullscreen Mat    
+    imgui_begin_disabled(!KEYSTONE_SETTINGS.is_fullscreen)
     var _prev = KEYSTONE_SETTINGS.should_show_fullscreen_mat
     var _checked = imgui_checkbox("Fullscreen Mat", _prev)
     if(_prev != _checked){
@@ -107,7 +109,7 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
     imgui_end_disabled()
     
     //Bilinear Filtering
-    imgui_begin_disabled(!KEYSTONE_SETTINGS.is_fullscreen && !KEYSTONE_SETTINGS.is_perfect_scale)
+    imgui_begin_disabled(keystone_is_inherently_perfectly_scaled() || KEYSTONE_SETTINGS.is_perfect_scale)
     var _prev = KEYSTONE_SETTINGS.enable_filtering
     var _checked = imgui_checkbox("Bilinear Filter", _prev)
     if(_prev != _checked){

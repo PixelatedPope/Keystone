@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"srvDisplayManagement",
+  "%Name":"libKeystone",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"srvDisplayManagement",
+  "name":"libKeystone",
   "parent":{
     "name":"GameScaler",
     "path":"GameScaler.yyp",

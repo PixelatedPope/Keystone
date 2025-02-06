@@ -1,5 +1,5 @@
 /// @description
-settings = new KeystoneDisplaySettings(320, 180);
+settings = new KeystoneSettings(320, 180);
 settings.is_borderless = false;
 settings.is_fullscreen = true;
 settings.is_perfect_scale = true;

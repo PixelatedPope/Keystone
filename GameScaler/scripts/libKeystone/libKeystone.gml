@@ -1,6 +1,7 @@
 
-//@func KeystoneDisplaySettings()
-function KeystoneDisplaySettings(_base_w, _base_h) constructor{
+//@func KeystoneSettings()
+function KeystoneSettings(_base_w, _base_h) constructor{
+  //There are no functions in here to keep it easily serializable
   base_width = _base_w;
   base_height = _base_h;
   window_scale = KEYSTONE_AUTO_MAX;
@@ -12,18 +13,13 @@ function KeystoneDisplaySettings(_base_w, _base_h) constructor{
   should_show_fullscreen_mat = false; //TODO: Allow user to define custom function for drawing the mat sprite
   enable_filtering = true;
   gui_scale = 1;
-  
-  //There are no functions in here to keep it easily serializable
 }
 
-#region PUBLIC MACROS
+#region MACROS
 #macro KEYSTONE_AUTO_MAX 0
 #macro KEYSTONE_SETTINGS global.__keystone_settings
 #macro KEYSTONE_VIEW view_camera[0]
 
-
-#macro KEYSTONE_DISP_W display_get_width()
-#macro KEYSTONE_DISP_H display_get_height()
 #macro KEYSTONE_VIEW_X camera_get_view_x(KEYSTONE_VIEW)
 #macro KEYSTONE_VIEW_Y camera_get_view_y(KEYSTONE_VIEW)
 #macro KEYSTONE_VIEW_W camera_get_view_width(KEYSTONE_VIEW)
@@ -32,6 +28,9 @@ function KeystoneDisplaySettings(_base_w, _base_h) constructor{
 #macro KEYSTONE_VIEW_B (KEYSTONE_VIEW_Y + KEYSTONE_VIEW_H)
 #macro KEYSTONE_VIEW_CENTER_X (KEYSTONE_VIEW_X + KEYSTONE_VIEW_W/2)
 #macro KEYSTONE_VIEW_CENTER_Y (KEYSTONE_VIEW_Y + KEYSTONE_VIEW_H/2)
+
+#macro KEYSTONE_DISP_W display_get_width()
+#macro KEYSTONE_DISP_H display_get_height()
 
 #macro KEYSTONE_GUI_W camera_get_view_width(global.__keystone_gui_cam)
 #macro KEYSTONE_GUI_H camera_get_view_height(global.__keystone_gui_cam)
@@ -44,12 +43,11 @@ function KeystoneDisplaySettings(_base_w, _base_h) constructor{
 #macro KEYSTONE_APP_SURF_W surface_get_width(KEYSTONE_APP_SURF)
 #macro KEYSTONE_APP_SURF_H surface_get_height(KEYSTONE_APP_SURF)
 
-
 #macro KEYSTONE_WIN_W window_get_width()
 #macro KEYSTONE_WIN_H window_get_height()
 
-#region PRIVATE MACORS & VARIABLES
-__keystone_settings = new KeystoneDisplaySettings(640, 360)
+#region PRIVATE GLOBAL VARIABLES
+__keystone_settings = new KeystoneSettings(640, 360)
 __keystone_gui_cam = camera_create_view(0,0, KEYSTONE_BASE_W, KEYSTONE_BASE_H)
 __keystone_gui_surf = noone
 
@@ -59,7 +57,17 @@ __keystone_gui_surf = noone
 #region GETTERS
 
 ///@function 
-function display_get_max_window_scale(){
+function keystone_is_inherently_perfectly_scaled(){
+  var _perfect_scale = (KEYSTONE_DISP_H div KEYSTONE_BASE_H) == (KEYSTONE_DISP_H / KEYSTONE_BASE_H)
+
+  if(KEYSTONE_SETTINGS.is_fullscreen){
+    if(_perfect_scale) return true;
+    return false;
+  }
+  return true;
+}
+
+function keystone_get_max_window_scale(){
   if(KEYSTONE_SETTINGS.is_borderless){
     return min(KEYSTONE_DISP_W div KEYSTONE_BASE_W, KEYSTONE_DISP_H div KEYSTONE_BASE_H)
   }
@@ -71,7 +79,7 @@ function display_get_max_window_scale(){
   return min(_min_w, _min_h);
 }
 
-function display_get_current_window_scale(){
+function display_get_max_element_scale(){
   return min(KEYSTONE_WIN_W div KEYSTONE_BASE_W, KEYSTONE_WIN_H div KEYSTONE_BASE_H)
 }
 
@@ -144,7 +152,7 @@ function display_update_borderless(){
 
 function display_update_gui_scale(){
   var _scale = KEYSTONE_SETTINGS.gui_scale;
-  _scale = clamp(_scale, 1, display_get_current_window_scale());
+  _scale = clamp(_scale, 1, keystone_get_max_window_scale());
   if(KEYSTONE_BASE_W * _scale == KEYSTONE_GUI_W && KEYSTONE_BASE_H * _scale == KEYSTONE_GUI_H) return;
 
   camera_set_view_size(global.__keystone_gui_cam, KEYSTONE_BASE_W * _scale, KEYSTONE_BASE_H * _scale);
@@ -155,7 +163,7 @@ function display_update_gui_scale(){
 
 function display_update_resolution(){
   var _scale = KEYSTONE_SETTINGS.resolution;
-  if(_scale == 0) _scale = display_get_current_window_scale()
+  if(_scale == 0) _scale = keystone_get_max_window_scale()
   _scale = clamp(_scale, 1, KEYSTONE_SETTINGS.resolution_max);
   var _w = KEYSTONE_BASE_W * _scale;
   var _h = KEYSTONE_BASE_H * _scale;
@@ -306,8 +314,8 @@ function __surface_draw_filtered(_surface = application_surface, _enable_filteri
 }
 
 function __calculate_max_window_scale(){
-  if(KEYSTONE_SETTINGS.window_scale == KEYSTONE_AUTO_MAX) return display_get_max_window_scale();
-  return min(KEYSTONE_SETTINGS.window_scale, display_get_max_window_scale());
+  if(KEYSTONE_SETTINGS.window_scale == KEYSTONE_AUTO_MAX) return keystone_get_max_window_scale();
+  return min(KEYSTONE_SETTINGS.window_scale, keystone_get_max_window_scale());
 }
 
 #endregion
