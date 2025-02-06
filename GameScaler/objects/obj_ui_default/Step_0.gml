@@ -1,7 +1,7 @@
 /// @description
   
-var _x = VIEW_X + lengthdir_x(.33, camera_direction),
-    _y = VIEW_Y + lengthdir_y(.33, camera_direction);
+var _x = VIEW_X + lengthdir_x(.1, camera_direction),
+    _y = VIEW_Y + lengthdir_y(.1, camera_direction);
 
 var _clamped_x = clamp(_x, 0, room_width - VIEW_W);
 var _clamped_y = clamp(_y, 0, room_height - VIEW_H);

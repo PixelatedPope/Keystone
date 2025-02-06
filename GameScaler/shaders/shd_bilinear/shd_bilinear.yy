@@ -1,7 +1,7 @@
 {
   "$GMShader":"",
-  "%Name":"sh_better_scaling_bilinear",
-  "name":"sh_better_scaling_bilinear",
+  "%Name":"shd_bilinear",
+  "name":"shd_bilinear",
   "parent":{
     "name":"GameScaler",
     "path":"GameScaler.yyp",

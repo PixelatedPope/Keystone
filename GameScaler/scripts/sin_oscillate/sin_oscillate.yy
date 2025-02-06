@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"draw_surface_bilinear",
+  "%Name":"sin_oscillate",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"draw_surface_bilinear",
+  "name":"sin_oscillate",
   "parent":{
     "name":"GameScaler",
     "path":"GameScaler.yyp",
