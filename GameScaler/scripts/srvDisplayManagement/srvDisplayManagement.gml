@@ -1,24 +1,31 @@
-#macro RES_AUTO 0
 
-global.settings = {
-  window_scale: 30,
-  is_borderless: true,
-  is_fullscreen: false,
-  is_perfect_scale: false,
-  resolution: RES_AUTO,
-  resolution_max: infinity, 
-  should_show_fullscreen_mat: false,
-  enable_filtering: true,
-  gui_scale: 1
+//@func DisplaySettings()
+function DisplaySettings(_base_w, _base_h) constructor{
+  base_width = _base_w;
+  base_height = _base_h;
+  window_scale = AUTO_MAX;
+  is_borderless = true;
+  is_fullscreen = false;
+  is_perfect_scale = false;
+  resolution = AUTO_MAX;
+  resolution_max = AUTO_MAX; //Probably shouldn't be exposed to players. This is just to prevent your app surface from getting massive on Super HD Monitors (4k, 8k, etc)
+  should_show_fullscreen_mat = false; //TODO: Allow user to define custom function for drawing the mat sprite
+  enable_filtering = true;
+  gui_scale = 1;
+  
+  //There are no functions in here to keep it easily serializable
 }
 
 #region MACROS
-
+__settings = new DisplaySettings(640, 360)
 __gui_cam = camera_create_view(0,0, BASE_W, BASE_H)
 __gui_surf = noone
 
-#macro BASE_W 256
-#macro BASE_H 222
+#macro AUTO_MAX 0
+#macro DISP_SETTINGS global.__settings
+
+#macro BASE_W DISP_SETTINGS.base_width
+#macro BASE_H DISP_SETTINGS.base_height
 #macro ASPECT (BASE_W / BASE_H)
 
 #macro DISP_W display_get_width()
@@ -47,8 +54,9 @@ __gui_surf = noone
 
 #region GETTERS
 
-function get_max_window_scale(){
-  if(global.settings.is_borderless){
+///@function 
+function display_get_max_window_scale(){
+  if(DISP_SETTINGS.is_borderless){
     return min(DISP_W div BASE_W, DISP_H div BASE_H)
   }
   
@@ -67,7 +75,7 @@ function display_get_mouse(_device = 0){
   var _pos;
   var _mouse_x = device_mouse_raw_x(0);
   var _mouse_y = device_mouse_raw_y(0);
-  if(global.settings.is_fullscreen && global.settings.is_perfect_scale)
+  if(DISP_SETTINGS.is_fullscreen && DISP_SETTINGS.is_perfect_scale)
     _pos = __display_calculate_app_surf_perfect_render_position();
   else
     _pos = __display_calculate_app_surf_position();
@@ -82,7 +90,7 @@ function display_get_mouse_gui(_device = 0){
   var _pos;
   var _mouse_x = device_mouse_raw_x(0);
   var _mouse_y = device_mouse_raw_y(0);
-  if(global.settings.is_fullscreen && global.settings.is_perfect_scale)
+  if(DISP_SETTINGS.is_fullscreen && DISP_SETTINGS.is_perfect_scale)
     _pos = __display_calculate_app_surf_perfect_render_position();
   else
     _pos = __display_calculate_app_surf_position();
@@ -95,35 +103,29 @@ function display_get_mouse_gui(_device = 0){
 
 #endregion
 
-#region SETTERS
-function display_set_perfect_scaling(_is_perfect){
-  global.settings.is_perfect_scale = _is_perfect;
+#region UPDATERS
+function display_update_base_size(_w, _h){
+    DISP_SETTINGS.base_width = _w;
+    DISP_SETTINGS.base_height = _h;
+    display_update_resolution()
+    display_update_window_scale()
+    display_update_gui_scale()
 }
 
-function display_set_should_show_fullscreen_mat(_should_show){
-  global.settings.should_show_fullscreen_mat = _should_show;  
-}
-
-function display_set_filter_enabled(_should_filter){
-  global.settings.enable_filtering = _should_filter;  
-}
-
-function display_set_fullscreen(_is_fullscreen){
-  global.settings.is_fullscreen = _is_fullscreen;
-  if(!global.settings.is_borderless)
-    window_set_fullscreen(_is_fullscreen);  
+function display_update_fullscreen(){
+  if(!DISP_SETTINGS.is_borderless)
+    window_set_fullscreen(DISP_SETTINGS.is_fullscreen);  
   
   call_later(.25, time_source_units_seconds, function(){
-    display_set_window_scale();
+    display_update_window_scale();
   })
 }
 
 
-function display_set_borderless(_is_borderless){
-  window_set_showborder(!_is_borderless);  
-  global.settings.is_borderless = _is_borderless;
-  if(global.settings.is_fullscreen){
-    if(_is_borderless){
+function display_update_borderless(){
+  window_set_showborder(!DISP_SETTINGS.is_borderless);  
+  if(DISP_SETTINGS.is_fullscreen){
+    if(DISP_SETTINGS.is_borderless){
       window_set_fullscreen(false);
       call_later(.25, time_source_units_seconds, function(){
         window_set_rectangle(0, 0, DISP_W, DISP_H)
@@ -132,61 +134,54 @@ function display_set_borderless(_is_borderless){
       window_set_fullscreen(true); 
     }
   } else {
-    display_set_window_scale()
+    display_update_window_scale()
   }
 }
 
-function display_set_gui_scale(_scale = global.settings.gui_scale){
+function display_update_gui_scale(){
+  var _scale = DISP_SETTINGS.gui_scale;
   _scale = clamp(_scale, 1, display_get_current_window_scale());
   if(BASE_W * _scale == GUI_W && BASE_H * _scale == GUI_H) return;
-  global.settings.gui_scale = _scale;
+
   camera_set_view_size(global.__gui_cam, BASE_W * _scale, BASE_H * _scale);
   if(surface_exists(global.__gui_surf)) surface_free(global.__gui_surf);
   
   global.__gui_surf = surface_create(GUI_W, GUI_H);
 }
 
-function display_set_resolution(_scale = global.settings.resolution){
-  global.settings.resolution = _scale;
+function display_update_resolution(){
+  var _scale = DISP_SETTINGS.resolution;
   if(_scale == 0) _scale = display_get_current_window_scale()
-  _scale = clamp(_scale, 1, global.settings.resolution_max);
+  _scale = clamp(_scale, 1, DISP_SETTINGS.resolution_max);
   var _w = BASE_W * _scale;
   var _h = BASE_H * _scale;
   surface_resize(APP_SURF, _w, _h);
 }
 
-function display_set_window_scale(_scale = global.settings.window_scale){
-  if(global.settings.is_fullscreen && global.settings.is_borderless) {
+function display_update_window_scale(){
+  if(DISP_SETTINGS.is_fullscreen && DISP_SETTINGS.is_borderless) {
     window_set_rectangle(0, 0, DISP_W, DISP_H)
     return;
   }
-    
-  global.settings.window_scale = min(_scale, get_max_window_scale(global.settings.is_borderless));  
-  window_set_size(BASE_W * global.settings.window_scale, BASE_H * global.settings.window_scale);
-  display_set_resolution();
-  display_set_gui_scale();
+  var _scale = __calculate_max_window_scale()
+  window_set_size(BASE_W * _scale, BASE_H * _scale);
+  display_update_resolution();
+  display_update_gui_scale();
   window_center();
 }
 #endregion
 
 #region Display Manager Event Functions
-function display_create(){
-  var _settings = global.settings;
-  window_set_showborder(!_settings.is_borderless)
-  if(_settings.is_fullscreen && !_settings.is_borderless){
-    window_set_fullscreen(true);
-  } else {
-    var _scale;
-    _scale = min(get_max_window_scale(_settings.is_borderless), _settings.window_scale)
-    window_set_size(BASE_W * _scale, BASE_H * _scale);
-    window_center();
-  }
-  display_set_window_scale()
-  application_surface_draw_enable(false);  
+function display_create(_settings){
+  global.__settings = _settings
+  application_surface_draw_enable(false);
+  display_update_base_size(_settings.base_width, _settings.base_height)
+
+  display_update_borderless()
+  display_update_fullscreen()  
 }
 
 function display_draw_gui_begin(){
-  
   if(!surface_exists(global.__gui_surf)){
     global.__gui_surf = surface_create(GUI_W, GUI_H);
   }
@@ -198,18 +193,16 @@ function display_draw_gui_begin(){
 
 
 function display_post_draw(){
-  var _settings = global.settings;
-
-  if(_settings.is_fullscreen && _settings.should_show_fullscreen_mat){
+  if(DISP_SETTINGS.is_fullscreen && DISP_SETTINGS.should_show_fullscreen_mat){
     var _scale = WIN_W / sprite_get_width(spr_fullscreen_mat)
     draw_sprite_ext(spr_fullscreen_mat, 0, WIN_W / 2, WIN_H / 2, _scale, 1, 0, c_white, 1);  
   }
 
-  if(_settings.is_fullscreen && _settings.is_perfect_scale){
+  if(DISP_SETTINGS.is_fullscreen && DISP_SETTINGS.is_perfect_scale){
     var _pos = __display_calculate_app_surf_perfect_render_position();
     draw_surface_stretched(APP_SURF, _pos.x1, _pos.y1, _pos.w, _pos.h);
   } else {
-    __surface_draw_filtered(APP_SURF,_settings.is_fullscreen && _settings.enable_filtering)
+    __surface_draw_filtered(APP_SURF,DISP_SETTINGS.is_fullscreen && DISP_SETTINGS.enable_filtering)
   }
 }
 
@@ -219,12 +212,11 @@ function display_draw_gui_end(){
   if(!surface_exists(global.__gui_surf)) exit;
 
   display_set_gui_maximize();
-  var _settings = global.settings;
-  if(_settings.is_fullscreen && _settings.is_perfect_scale){
+  if(DISP_SETTINGS.is_fullscreen && DISP_SETTINGS.is_perfect_scale){
     var _pos = __display_calculate_app_surf_perfect_render_position();
     draw_surface_stretched(global.__gui_surf, _pos.x1, _pos.y1, _pos.w, _pos.h);
   } else {
-    __surface_draw_filtered(global.__gui_surf, _settings.is_fullscreen && _settings.enable_filtering)
+    __surface_draw_filtered(global.__gui_surf, DISP_SETTINGS.is_fullscreen && DISP_SETTINGS.enable_filtering)
   }  
 }
 
@@ -281,7 +273,6 @@ function __position_between(_val, _low, _up){
 }
 
 function __surface_draw_filtered(_surface = application_surface, _enable_filtering = true){
-  
   var _surfWidth = surface_get_width(_surface), 
       _surfHeight = surface_get_height(_surface), 
       _winWidth = window_get_width(), 
@@ -309,6 +300,11 @@ function __surface_draw_filtered(_surface = application_surface, _enable_filteri
   } else{
     draw_surface_ext(_surface,  _x,  _y, _scale, _scale, 0, c_white, 1)
   }
+}
+
+function __calculate_max_window_scale(){
+  if(DISP_SETTINGS.window_scale == AUTO_MAX) return display_get_max_window_scale();
+  return min(DISP_SETTINGS.window_scale, display_get_max_window_scale());
 }
 
 #endregion
