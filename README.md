@@ -33,9 +33,6 @@
   <a href="https://github.com/PixelatedPope/Keystone">
     <img src="images/logo.png" alt="Logo" width="250" height="250">
   </a>
-
-<h3 align="center">Keystone</h3>
-
   <p align="center">
     Pixel Perfect Projection Plugin
     <br />
@@ -56,12 +53,6 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
