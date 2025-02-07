@@ -96,10 +96,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Installation
 
-1. Clone the repo or Download the YYMP from Somehwere That Doesn't Yet Exist
-   ```sh
-   git clone https://github.com/PixelatedPope/Keystone.git
-   ```
+1. Download the  [YYMPS](builds/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
