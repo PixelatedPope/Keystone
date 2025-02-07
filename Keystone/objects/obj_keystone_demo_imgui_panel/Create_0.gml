@@ -1,6 +1,8 @@
 /// @description
 imgui_initialize()
 
+windows = [];
+
 imgui_row = function(_name, _x, _y) {
     ImGui.TableNextRow();
     ImGui.TableSetColumnIndex(0); ImGui.Text(_name);
@@ -8,10 +10,7 @@ imgui_row = function(_name, _x, _y) {
     ImGui.TableSetColumnIndex(2); ImGui.Text(_y);
 };
 
-
-windows = [];
-
-debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResize})
+debug_window = new ImguiWindow($"Keystone Control Panel", { flags: ImGuiWindowFlags.AlwaysAutoResize})
   .set_open(true)
   .set_constraints(300, 400, 300, 1000)
   .set_name_dynamic(function(){
