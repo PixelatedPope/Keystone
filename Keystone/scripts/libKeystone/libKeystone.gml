@@ -47,13 +47,14 @@ function KeystoneBounds(_x1, _y1, _x2 = undefined, _y2 = undefined, _width = und
 
 #macro KEYSTONE_DISP_W display_get_width()
 #macro KEYSTONE_DISP_H display_get_height()
+#macro KEYSTONE_DISP_ASPECT (KEYSTONE_DISP_W / KEYSTONE_DISP_H)
 
 #macro KEYSTONE_GUI_W camera_get_view_width(global.__keystone_gui_cam)
 #macro KEYSTONE_GUI_H camera_get_view_height(global.__keystone_gui_cam)
 
 #macro KEYSTONE_BASE_W KEYSTONE_SETTINGS.base_width
 #macro KEYSTONE_BASE_H KEYSTONE_SETTINGS.base_height
-#macro KEYSTONE_ASPECT (KEYSTONE_BASE_W / KEYSTONE_BASE_H)
+#macro KEYSTONE_BASE_ASPECT (KEYSTONE_BASE_W / KEYSTONE_BASE_H)
 
 #macro KEYSTONE_APP_SURF application_surface
 #macro KEYSTONE_APP_SURF_W surface_get_width(KEYSTONE_APP_SURF)
@@ -84,13 +85,16 @@ function keystone_set_mat_drawing_func(_func){
 ///@func keystone_is_inherently_perfectly_scaled()
 ///Returns true if the app surface will scale perfectly without needing the is_perfect_scale setting.
 function keystone_is_inherently_perfectly_scaled(){
-  var _perfect_scale = (KEYSTONE_DISP_H div KEYSTONE_BASE_H) == (KEYSTONE_DISP_H / KEYSTONE_BASE_H)
-
-  if(KEYSTONE_SETTINGS.is_fullscreen){
-    if(_perfect_scale) return true;
-    return false;
+  var _whole_ratio, _ratio;
+  if(KEYSTONE_DISP_ASPECT < KEYSTONE_BASE_ASPECT) {
+    _whole_ratio = KEYSTONE_DISP_W div KEYSTONE_BASE_W
+    _ratio = (KEYSTONE_DISP_W / KEYSTONE_BASE_W)
+    
+  } else {
+    _whole_ratio = KEYSTONE_DISP_H div KEYSTONE_BASE_H
+    _ratio = (KEYSTONE_DISP_H / KEYSTONE_BASE_H)
   }
-  return true;
+  return KEYSTONE_SETTINGS.is_fullscreen ? _whole_ratio == _ratio : true;
 }
 
 ///@func keystone_get_max_window_scale()

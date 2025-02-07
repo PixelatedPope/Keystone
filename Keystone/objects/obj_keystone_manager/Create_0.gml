@@ -1,9 +1,8 @@
 /// @description
 //Define or Load your Keystone settings
-
 var _w = sprite_get_width(spr_trials_screenshot)
 var _h = sprite_get_height(spr_trials_screenshot);
-settings = new KeystoneSettings(_w, _h);
+settings = new KeystoneSettings(400, 120);
 settings.is_borderless = true;
 settings.is_fullscreen = true;
 settings.is_perfect_scale = true;

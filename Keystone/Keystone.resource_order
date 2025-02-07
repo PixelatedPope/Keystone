@@ -1,9 +1,9 @@
 {
   "FolderOrderSettings":[
     {"name":"Example","order":24,"path":"folders/Example.yy",},
-    {"name":"Misc Helpers (Not Required)","order":25,"path":"folders/Misc Helpers (Not Required).yy",},
     {"name":"ImGui_GM","order":6,"path":"folders/ImGui_GM.yy",},
     {"name":"Keystone","order":23,"path":"folders/Keystone.yy",},
+    {"name":"Misc Helpers (Not Required)","order":25,"path":"folders/Misc Helpers (Not Required).yy",},
   ],
   "ResourceOrderSettings":[
     {"name":"ImGui_GM","order":1,"path":"extensions/ImGui_GM/ImGui_GM.yy",},

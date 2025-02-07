@@ -30,9 +30,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/PixelatedPope/Keystone">
-    <img src="images/logo.png" alt="Logo" width="315" height="250">
-  </a>
+  <img src="images/logo.png" alt="Logo" width="315" height="250">
+
   <p align="center">
     Pixel Perfect Projection Plugin
     <br />
@@ -154,7 +153,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the project_license. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

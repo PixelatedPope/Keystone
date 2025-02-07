@@ -11,9 +11,9 @@
   "defaultScriptType":1,
   "Folders":[
     {"$GMFolder":"","%Name":"Example","folderPath":"folders/Example.yy","name":"Example","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Misc Helpers (Not Required)","folderPath":"folders/Misc Helpers (Not Required).yy","name":"Misc Helpers (Not Required)","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"ImGui_GM","folderPath":"folders/ImGui_GM.yy","name":"ImGui_GM","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Keystone","folderPath":"folders/Keystone.yy","name":"Keystone","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Misc Helpers (Not Required)","folderPath":"folders/Misc Helpers (Not Required).yy","name":"Misc Helpers (Not Required)","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
   "IncludedFiles":[],
   "isEcma":false,
