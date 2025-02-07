@@ -176,7 +176,6 @@ Project Link: [https://github.com/PixelatedPope/Keystone](https://github.com/Pix
 
 * Demo uses [ImGui_GM by nomiin](https://github.com/nommiin/ImGui_GM)
 * Shaders written by [Mytino](https://marketplace.gamemaker.io/publishers/307/mytino)
-* []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
