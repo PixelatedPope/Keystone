@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/PixelatedPope/Keystone">
-    <img src="images/logo.png" alt="Logo" width="250" height="250">
+    <img src="images/logo.png" alt="Logo" width="315" height="250">
   </a>
   <p align="center">
     Pixel Perfect Projection Plugin
