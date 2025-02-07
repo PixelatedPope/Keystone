@@ -1,6 +1,6 @@
 {
   "$GMProject":"",
-  "%Name":"GameScaler",
+  "%Name":"Keystone",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
@@ -21,7 +21,7 @@
   "MetaData":{
     "IDEVersion":"2024.11.0.179",
   },
-  "name":"GameScaler",
+  "name":"Keystone",
   "resources":[
     {"id":{"name":"ImGui_GM","path":"extensions/ImGui_GM/ImGui_GM.yy",},},
     {"id":{"name":"obj_keystone_demo_imgui_panel","path":"objects/obj_keystone_demo_imgui_panel/obj_keystone_demo_imgui_panel.yy",},},

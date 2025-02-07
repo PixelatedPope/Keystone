@@ -19,8 +19,8 @@
   ],
   "name":"rm_init",
   "parent":{
-    "name":"GameScaler",
-    "path":"GameScaler.yyp",
+    "name":"Keystone",
+    "path":"Keystone.yyp",
   },
   "parentRoom":null,
   "physicsSettings":{
