@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"sin_oscillate",
   "parent":{
-    "name":"GameScaler",
-    "path":"GameScaler.yyp",
+    "name":"Misc Helpers (Not Required)",
+    "path":"folders/Misc Helpers (Not Required).yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

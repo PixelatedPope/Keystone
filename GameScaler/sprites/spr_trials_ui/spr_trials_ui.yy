@@ -27,8 +27,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"GameScaler",
-    "path":"GameScaler.yyp",
+    "name":"Example",
+    "path":"folders/Example.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

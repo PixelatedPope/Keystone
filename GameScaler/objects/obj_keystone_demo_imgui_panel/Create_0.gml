@@ -26,7 +26,7 @@ debug_window = new ImguiWindow($"Test", { flags: ImGuiWindowFlags.AlwaysAutoResi
       ImGui.TableHeadersRow();
       imgui_row("Window", $"{KEYSTONE_WIN_W}", $"{KEYSTONE_WIN_H}");
       imgui_row("App Surf", $"{KEYSTONE_APP_SURF_W}",$"{KEYSTONE_APP_SURF_H}");
-      var _max = KEYSTONE_SETTINGS.resolution_max;
+      var _max = KEYSTONE_SETTINGS.resolution_max == KEYSTONE_AUTO_MAX ? keystone_get_max_element_scale() : KEYSTONE_SETTINGS.resolution_max;
       if(_max == infinity){
         var _factor = min(KEYSTONE_DISP_W div KEYSTONE_BASE_W, KEYSTONE_DISP_H div KEYSTONE_BASE_H)
         imgui_row("Max App Surf", $"{KEYSTONE_BASE_W * _factor}",$"{KEYSTONE_BASE_H * _factor}");

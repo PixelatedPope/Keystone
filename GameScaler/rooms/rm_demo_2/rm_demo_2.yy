@@ -17,8 +17,8 @@
   ],
   "name":"rm_demo_2",
   "parent":{
-    "name":"GameScaler",
-    "path":"GameScaler.yyp",
+    "name":"Example",
+    "path":"folders/Example.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

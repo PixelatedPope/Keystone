@@ -11,8 +11,8 @@
   "name":"obj_keystone_demo_imgui_panel",
   "overriddenProperties":[],
   "parent":{
-    "name":"GameScaler",
-    "path":"GameScaler.yyp",
+    "name":"Example",
+    "path":"folders/Example.yy",
   },
   "parentObjectId":null,
   "persistent":false,
