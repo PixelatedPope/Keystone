@@ -78,6 +78,7 @@ __keystone_mat_func = function(){}
 #endregion
 
 #region SETTERS
+
 ///@func keystone_set_mat_drawing_func(func)
 ///Allows you to define how your mat sprite is drawn in full screen.
 ///This function will be passed the window bounds as well as the dimensions the app surface is occupying.
