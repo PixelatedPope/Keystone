@@ -108,7 +108,7 @@ To get a local copy up and running follow these simple example steps.
 
 ### Installation
 
-1. Download the  [YYMPS](releases/)
+1. Download the  [YYMPS](https://github.com/PixelatedPope/Keystone/releases)
 2. Drag and drop it into your project
 3. Put an instance of obj_keystone_manager in the first room of your game.
    1. Customize the Keystone Settings struct in the manager's create event to fit your desired options.
