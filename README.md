@@ -83,7 +83,7 @@ Keystone is a tool to help make your game look its best on any monitor! With a v
 
 <!-- Features -->
 ## Features
-![Static Badge](https://img.shields.io/badge/Made_With_%26_For-GameMaker-green?style=flat-square&logo=gamemaker&logoColor=white)
+![Static Badge](https://img.shields.io/badge/Made_With_%26_For-GameMaker_2024+-green?style=flat-square&logo=gamemaker&logoColor=white)
 ### Game Resolution Made Easy
 * Plug in the desired resolution for your game, and feel confident it will scale and look beautiful on almost any display resolution!
 * Control the resolution of your game easily. Want a crunchy, retro pixel aesthetic? Or do you want everything to be as smooth as possible? Either is easy to enable with Keystone!
@@ -109,10 +109,12 @@ To get a local copy up and running follow these simple example steps.
 ### Installation
 
 1. Download the  [YYMPS](builds/)
+2. Drag and drop it into your project
+3. Put an instance of obj_keystone_manager in the first room of your game.
+   1. Customize the Keystone Settings struct in the manager's create event to fit your desired options.
+4. If necessary, remove any other code you had that was trying to manage your resolution stuff (like the room start event for the camera object from my old GMS2 Camera Tutorial)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage

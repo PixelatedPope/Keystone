@@ -1,12 +1,11 @@
 /// @description
 //Define or Load your Keystone settings
-var _w = sprite_get_width(spr_trials_screenshot)
-var _h = sprite_get_height(spr_trials_screenshot);
-settings = new KeystoneSettings(_w, _h);
-settings.is_borderless = true;
-settings.is_fullscreen = true;
-settings.is_perfect_scale = true;
-settings.should_show_fullscreen_mat = true;
+var _settings = new KeystoneSettings(256, 222);
+_settings.is_borderless = true;
+_settings.is_fullscreen = true;
+_settings.is_perfect_scale = true;
+_settings.should_show_fullscreen_mat = true;
+keystone_create(_settings)
 
 keystone_set_mat_drawing_func(
   function(_win, _app){
@@ -24,5 +23,3 @@ keystone_set_mat_drawing_func(
       draw_sprite_stretched(spr_mana_frame, 0, _app.x1-_off_x, _app.y1-_off_y, _app.width+_off_x*2, _app.height+_off_y*2);  
     }
   })
-keystone_create(settings)
-room_goto(rm_demo_1)

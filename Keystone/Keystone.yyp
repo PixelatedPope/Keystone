@@ -24,6 +24,7 @@
   "name":"Keystone",
   "resources":[
     {"id":{"name":"ImGui_GM","path":"extensions/ImGui_GM/ImGui_GM.yy",},},
+    {"id":{"name":"obj_i_go_to_the_first_demo_room","path":"objects/obj_i_go_to_the_first_demo_room/obj_i_go_to_the_first_demo_room.yy",},},
     {"id":{"name":"obj_keystone_demo_imgui_panel","path":"objects/obj_keystone_demo_imgui_panel/obj_keystone_demo_imgui_panel.yy",},},
     {"id":{"name":"obj_keystone_manager","path":"objects/obj_keystone_manager/obj_keystone_manager.yy",},},
     {"id":{"name":"obj_ui","path":"objects/obj_ui/obj_ui.yy",},},

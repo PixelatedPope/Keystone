@@ -5,10 +5,10 @@ function KeystoneSettings(_base_w, _base_h) constructor {
   base_width = _base_w;
   base_height = _base_h;
   window_scale = KEYSTONE_AUTO_MAX;
+  resolution = KEYSTONE_AUTO_MAX;
   is_borderless = true;
   is_fullscreen = true;
   is_perfect_scale = false;
-  resolution = KEYSTONE_AUTO_MAX;
   should_show_fullscreen_mat = false; 
   enable_filtering = true;
   
