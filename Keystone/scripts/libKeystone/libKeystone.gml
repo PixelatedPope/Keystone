@@ -6,13 +6,20 @@ function KeystoneSettings(_base_w, _base_h) constructor {
   base_height = _base_h;
   window_scale = KEYSTONE_AUTO_MAX;
   is_borderless = true;
-  is_fullscreen = false;
+  is_fullscreen = true;
   is_perfect_scale = false;
   resolution = KEYSTONE_AUTO_MAX;
-  resolution_max = KEYSTONE_AUTO_MAX; //Probably shouldn't be exposed to players. This is just to prevent your app surface from getting massive on Super HD Monitors (4k, 8k, etc)
   should_show_fullscreen_mat = false; 
   enable_filtering = true;
+  
+  //Settings that PROBABLY shouldn't be exposed to the end user
   gui_scale = 1;
+  resolution_max = KEYSTONE_AUTO_MAX; //Probably shouldn't be exposed to players. This is just to prevent your app surface from getting massive on Super HD Monitors (4k, 8k, etc)
+  
+  //Test how your game will work on a monitor of a specific resolution.
+  //For best results, perform tests in borderless mode.
+  display_test_mode_enabled = false;
+  display_test_res = {width: 1920, height: 1080};
 }
 
 function KeystoneBounds(_x1, _y1, _x2 = undefined, _y2 = undefined, _width = undefined, _height = undefined) constructor {
@@ -45,8 +52,8 @@ function KeystoneBounds(_x1, _y1, _x2 = undefined, _y2 = undefined, _width = und
 #macro KEYSTONE_VIEW_CENTER_X (KEYSTONE_VIEW_X + KEYSTONE_VIEW_W/2)
 #macro KEYSTONE_VIEW_CENTER_Y (KEYSTONE_VIEW_Y + KEYSTONE_VIEW_H/2)
 
-#macro KEYSTONE_DISP_W display_get_width()
-#macro KEYSTONE_DISP_H display_get_height()
+#macro KEYSTONE_DISP_W (KEYSTONE_SETTINGS.display_test_mode_enabled ? KEYSTONE_SETTINGS.display_test_res.width : display_get_width())
+#macro KEYSTONE_DISP_H (KEYSTONE_SETTINGS.display_test_mode_enabled ? KEYSTONE_SETTINGS.display_test_res.height : display_get_height())
 #macro KEYSTONE_DISP_ASPECT (KEYSTONE_DISP_W / KEYSTONE_DISP_H)
 
 #macro KEYSTONE_GUI_W camera_get_view_width(global.__keystone_gui_cam)

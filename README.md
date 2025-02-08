@@ -52,6 +52,7 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
+    <li><a href="#features">Features</a></li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
@@ -80,9 +81,21 @@ Keystone is a tool to help make your game look its best on any monitor! With a v
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+<!-- Features -->
+## Features
 ![Static Badge](https://img.shields.io/badge/Made_With_%26_For-GameMaker-green?style=flat-square&logo=gamemaker&logoColor=white)
-
-
+### Game Resolution Made Easy
+* Plug in the desired resolution for your game, and feel confident it will scale and look beautiful on almost any display resolution!
+* Control the resolution of your game easily. Want a crunchy, retro pixel aesthetic? Or do you want everything to be as smooth as possible? Either is easy to enable with Keystone!
+### Bilinear Filtering
+* With a single setting, enable a bilinear filter that smooths out imperfect scaling while retaining sharp pixel visuals. A process used in games like Sonic Mania!
+### Pixel Perfect Scaling
+* Want your game rendered perfectly? Enable the Perfect Scale setting, and your game will be rendered as large as possible on the current display while still only scaling in whole number multiples. You can even draw a custom mat graphic behind it (as seen in the above screenshot)
+* If you've ever attempted something like this yourself, you may have noticed that changing where the application surface renders in your game window will break several GM features. Mouse coordinates and the GUI layer will no longer line up with your game. Keystone includes functions to correct for these issues. 
+### Simulate Display Sizes
+* Curious what your game would look like on a 1280 x 720 display, but don't have one handy? What about a vertical display? Plug in the resolution you want to test with and run your game in borderless mode to see exactly how it would render on that display!
+### GUI Surface
+* When using Keystone, all gui events draw to a surface. This means you can control the actual pixel resolution more easily for crunchy retro UIs, as well as apply post processing effects like CRT shaders or the included bilinear filter (applied as necessary to the gui surface by default)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
