@@ -69,6 +69,7 @@ function KeystoneBounds(_x1, _y1, _x2 = undefined, _y2 = undefined, _width = und
 
 #macro KEYSTONE_WIN_W window_get_width()
 #macro KEYSTONE_WIN_H window_get_height()
+#macro KEYSTONE_WIN_ASPECT (KEYSTONE_WIN_W / KEYSTONE_WIN_H)
 
 #region PRIVATE GLOBAL VARIABLES
 __keystone_settings = new KeystoneSettings(640, 360)
@@ -94,15 +95,15 @@ function keystone_set_mat_drawing_func(_func){
 ///Returns true if the app surface will scale perfectly without needing the is_perfect_scale setting.
 function keystone_is_inherently_perfectly_scaled(){
   var _whole_ratio, _ratio;
-  if(KEYSTONE_DISP_ASPECT < KEYSTONE_BASE_ASPECT) {
-    _whole_ratio = KEYSTONE_DISP_W div KEYSTONE_BASE_W
-    _ratio = (KEYSTONE_DISP_W / KEYSTONE_BASE_W)
+  if(KEYSTONE_WIN_ASPECT < KEYSTONE_BASE_ASPECT) {
+    _whole_ratio = KEYSTONE_WIN_W div KEYSTONE_BASE_W
+    _ratio = (KEYSTONE_WIN_W / KEYSTONE_BASE_W)
     
   } else {
-    _whole_ratio = KEYSTONE_DISP_H div KEYSTONE_BASE_H
-    _ratio = (KEYSTONE_DISP_H / KEYSTONE_BASE_H)
+    _whole_ratio = KEYSTONE_WIN_H div KEYSTONE_BASE_H
+    _ratio = (KEYSTONE_WIN_H / KEYSTONE_BASE_H)
   }
-  return KEYSTONE_SETTINGS.is_fullscreen ? _whole_ratio == _ratio : true;
+  return _whole_ratio == _ratio;
 }
 
 ///@func keystone_get_max_window_scale()
@@ -156,7 +157,7 @@ function keystone_get_mouse_gui(_device = 0){
 ///Returns a KeystoneBound struct that represents the rectangle that is currently being used to position and scale the app surface.
 function keystone_get_app_surf_bounds(){
   var _scale, _w, _h, _x1, _y1, _x2, _y2;
-  if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.is_perfect_scale){
+  if(KEYSTONE_SETTINGS.is_perfect_scale){
     _scale = min(KEYSTONE_WIN_W div KEYSTONE_BASE_W, KEYSTONE_WIN_H div KEYSTONE_BASE_H);
     _w = KEYSTONE_BASE_W * _scale;
     _h = KEYSTONE_BASE_H * _scale;
@@ -283,17 +284,18 @@ function keystone_draw_gui_begin(){
 
 ///@func keystone_post_draw()
 ///Should be called in the Post Draw event of your Keystone Manager
-function keystone_post_draw(){
+///Can pass in a different surface if you have applied post processing effects
+function keystone_post_draw(_surf = KEYSTONE_APP_SURF){
   var _app_surf = keystone_get_app_surf_bounds();
-  if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.should_show_fullscreen_mat){
+  if(KEYSTONE_SETTINGS.should_show_fullscreen_mat){
     var _win = {x1: 0, y1: 0, x2: KEYSTONE_WIN_W, y2: KEYSTONE_WIN_H, width: KEYSTONE_WIN_W, height: KEYSTONE_WIN_H}
     global.__keystone_mat_func(_win, _app_surf);
   }
 
-  if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.is_perfect_scale){
-    draw_surface_stretched(KEYSTONE_APP_SURF, _app_surf.x1, _app_surf.y1, _app_surf.width, _app_surf.height);
+  if(KEYSTONE_SETTINGS.is_perfect_scale){
+    draw_surface_stretched(_surf, _app_surf.x1, _app_surf.y1, _app_surf.width, _app_surf.height);
   } else {
-    __surface_draw_filtered(KEYSTONE_APP_SURF,KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.enable_filtering)
+    __surface_draw_filtered(_surf,KEYSTONE_SETTINGS.enable_filtering)
   }
 }
 
@@ -305,7 +307,7 @@ function keystone_draw_gui_end(){
   if(!surface_exists(global.__keystone_gui_surf)) exit;
 
   display_set_gui_maximize();
-  if(KEYSTONE_SETTINGS.is_fullscreen && KEYSTONE_SETTINGS.is_perfect_scale){
+  if(KEYSTONE_SETTINGS.is_perfect_scale){
     var _pos = keystone_get_app_surf_bounds();
     draw_surface_stretched(global.__keystone_gui_surf, _pos.x1, _pos.y1, _pos.width, _pos.height);
   } else {
@@ -332,21 +334,19 @@ function __position_between(_val, _low, _up){
 }
 
 function __surface_draw_filtered(_surface = application_surface, _enable_filtering = true){
-  var _surfWidth = surface_get_width(_surface), 
-      _surfHeight = surface_get_height(_surface), 
-      _winWidth = window_get_width(), 
-      _winHeight = window_get_height(); 
-  var _scale = min(_winWidth / _surfWidth, _winHeight / _surfHeight);
+  var _surf_w = surface_get_width(_surface), 
+      _surf_h = surface_get_height(_surface), 
+  var _scale = min(KEYSTONE_WIN_W / _surf_w, KEYSTONE_WIN_H / _surf_h);
   
-  var _x = _winWidth / 2 - _surfWidth * _scale * .5;
-  var _y = _winHeight / 2 - _surfHeight * _scale * .5;
+  var _x = KEYSTONE_WIN_W / 2 - _surf_w * _scale * .5;
+  var _y = KEYSTONE_WIN_H / 2 - _surf_h * _scale * .5;
   
   
   if(_enable_filtering){
       if(_scale != 1){
         shader_set(shd_bilinear);
-        shader_set_uniform_f(shader_get_uniform(shd_bilinear, "bitmap_width"), _surfWidth);
-        shader_set_uniform_f(shader_get_uniform(shd_bilinear, "bitmap_height"), _surfHeight);
+        shader_set_uniform_f(shader_get_uniform(shd_bilinear, "bitmap_width"), _surf_w);
+        shader_set_uniform_f(shader_get_uniform(shd_bilinear, "bitmap_height"), _surf_h);
         shader_set_uniform_f(shader_get_uniform(shd_bilinear, "x_scale"), _scale)
         shader_set_uniform_f(shader_get_uniform(shd_bilinear, "y_scale"), _scale); 
       }

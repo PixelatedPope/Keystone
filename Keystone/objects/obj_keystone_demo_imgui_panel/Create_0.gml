@@ -99,13 +99,11 @@ debug_window = new ImguiWindow($"Keystone Control Panel", { flags: ImGuiWindowFl
     imgui_end_disabled()
     
     //Fullscreen Mat    
-    imgui_begin_disabled(!KEYSTONE_SETTINGS.is_fullscreen)
     var _prev = KEYSTONE_SETTINGS.should_show_fullscreen_mat
     var _checked = imgui_checkbox("Fullscreen Mat", _prev)
     if(_prev != _checked){
       KEYSTONE_SETTINGS.should_show_fullscreen_mat = _checked;
     }
-    imgui_end_disabled()
     
     //Bilinear Filtering
     imgui_begin_disabled(keystone_is_inherently_perfectly_scaled() || KEYSTONE_SETTINGS.is_perfect_scale)
