@@ -9,12 +9,14 @@ function KeystoneSettings(_base_w, _base_h) constructor {
   is_borderless = true;
   is_fullscreen = true;
   is_perfect_scale = false;
-  should_show_fullscreen_mat = false; 
+  should_show_window_mat = false; 
   enable_filtering = true;
   
   //Settings that PROBABLY shouldn't be exposed to the end user
   gui_scale = 1;
   resolution_max = KEYSTONE_AUTO_MAX; //Probably shouldn't be exposed to players. This is just to prevent your app surface from getting massive on Super HD Monitors (4k, 8k, etc)
+  is_window_resizable = false; //This should match what you set in the global game settings for the current target platform.
+  prev_win_size = undefined
   
   //Test how your game will work on a monitor of a specific resolution.
   //For best results, perform tests in borderless mode.
@@ -106,6 +108,13 @@ function keystone_is_inherently_perfectly_scaled(){
   return _whole_ratio == _ratio;
 }
 
+///@func keystone_is_filling_window()
+///@Returns true if the app surface is currently filling the whole window with now padding
+function keystone_is_filling_window(){
+  var _app = keystone_get_app_surf_bounds();
+  return _app.width = KEYSTONE_WIN_W && _app.height = KEYSTONE_WIN_H
+}
+
 ///@func keystone_get_max_window_scale()
 ///Returns the max, whole number multiple the window can be on the main display.
 function keystone_get_max_window_scale(){
@@ -192,8 +201,12 @@ function keystone_update_base_size(_w, _h){
 ///@func keystone_update_fullscreen()
 ///Will update the full screen state and/or window size as necessary based on the current settings
 function keystone_update_fullscreen(){
-  if(!KEYSTONE_SETTINGS.is_borderless)
-    window_set_fullscreen(KEYSTONE_SETTINGS.is_fullscreen);  
+  if(KEYSTONE_SETTINGS.is_fullscreen){
+    KEYSTONE_SETTINGS.prev_win_size = {width: KEYSTONE_WIN_W, height: KEYSTONE_WIN_H};
+  }
+  if(!KEYSTONE_SETTINGS.is_borderless){
+    window_set_fullscreen(KEYSTONE_SETTINGS.is_fullscreen);
+  }
   
   call_later(.25, time_source_units_seconds, function(){
     keystone_update_window_scale();
@@ -250,8 +263,12 @@ function keystone_update_window_scale(){
     window_set_rectangle(0, 0, KEYSTONE_DISP_W, KEYSTONE_DISP_H)
     return;
   }
-  var _scale = __calculate_max_window_scale()
-  window_set_size(KEYSTONE_BASE_W * _scale, KEYSTONE_BASE_H * _scale);
+  if(KEYSTONE_SETTINGS.is_window_resizable && KEYSTONE_SETTINGS.prev_win_size != undefined){
+    window_set_size(KEYSTONE_SETTINGS.prev_win_size.width, KEYSTONE_SETTINGS.prev_win_size.height);  
+  } else {
+    var _scale = __calculate_max_window_scale()
+    window_set_size(KEYSTONE_BASE_W * _scale, KEYSTONE_BASE_H * _scale);  
+  }  
   keystone_update_resolution();
   keystone_update_gui_scale();
   window_center();
@@ -270,6 +287,23 @@ function keystone_create(_settings){
   keystone_update_fullscreen()  
 }
 
+///@func keystone_post_draw()
+///Should be called in the Post Draw event of your Keystone Manager
+///Can pass in a different surface if you have applied post processing effects
+function keystone_post_draw(_surf = KEYSTONE_APP_SURF){
+  var _app_surf = keystone_get_app_surf_bounds();
+  if(KEYSTONE_SETTINGS.should_show_window_mat && !keystone_is_filling_window()){
+    var _win = {x1: 0, y1: 0, x2: KEYSTONE_WIN_W, y2: KEYSTONE_WIN_H, width: KEYSTONE_WIN_W, height: KEYSTONE_WIN_H}
+    global.__keystone_mat_func(_win, _app_surf);
+  }
+
+  if(KEYSTONE_SETTINGS.is_perfect_scale){
+    draw_surface_stretched(_surf, _app_surf.x1, _app_surf.y1, _app_surf.width, _app_surf.height);
+  } else {
+    __surface_draw_filtered(_surf,KEYSTONE_SETTINGS.enable_filtering)
+  }
+}
+
 ///@func keystone_draw_gui_begin()
 ///Should be called in the Draw Gui Begin event of your Keystone Manager
 function keystone_draw_gui_begin(){
@@ -280,23 +314,6 @@ function keystone_draw_gui_begin(){
   surface_set_target(global.__keystone_gui_surf);
   draw_clear_alpha(0,0);
   camera_apply(global.__keystone_gui_cam); //NOTE: If at any time in any draw gui event you change render targets (surface_set_target), you will need to call this line again
-}
-
-///@func keystone_post_draw()
-///Should be called in the Post Draw event of your Keystone Manager
-///Can pass in a different surface if you have applied post processing effects
-function keystone_post_draw(_surf = KEYSTONE_APP_SURF){
-  var _app_surf = keystone_get_app_surf_bounds();
-  if(KEYSTONE_SETTINGS.should_show_fullscreen_mat){
-    var _win = {x1: 0, y1: 0, x2: KEYSTONE_WIN_W, y2: KEYSTONE_WIN_H, width: KEYSTONE_WIN_W, height: KEYSTONE_WIN_H}
-    global.__keystone_mat_func(_win, _app_surf);
-  }
-
-  if(KEYSTONE_SETTINGS.is_perfect_scale){
-    draw_surface_stretched(_surf, _app_surf.x1, _app_surf.y1, _app_surf.width, _app_surf.height);
-  } else {
-    __surface_draw_filtered(_surf,KEYSTONE_SETTINGS.enable_filtering)
-  }
 }
 
 ///@func keystone_draw_gui_end()

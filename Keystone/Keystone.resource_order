@@ -19,7 +19,6 @@
     {"name":"snake_case","order":4,"path":"scripts/snake_case/snake_case.yy",},
     {"name":"shd_bilinear","order":2,"path":"shaders/shd_bilinear/shd_bilinear.yy",},
     {"name":"shdImGui","order":3,"path":"shaders/shdImGui/shdImGui.yy",},
-    {"name":"spr_fullscreen_mat","order":10,"path":"sprites/spr_fullscreen_mat/spr_fullscreen_mat.yy",},
     {"name":"spr_mana_frame","order":9,"path":"sprites/spr_mana_frame/spr_mana_frame.yy",},
     {"name":"spr_mania_screenshot","order":4,"path":"sprites/spr_mania_screenshot/spr_mania_screenshot.yy",},
     {"name":"spr_target","order":5,"path":"sprites/spr_target/spr_target.yy",},
@@ -27,5 +26,6 @@
     {"name":"spr_trials_town","order":7,"path":"sprites/spr_trials_town/spr_trials_town.yy",},
     {"name":"spr_trials_ui","order":8,"path":"sprites/spr_trials_ui/spr_trials_ui.yy",},
     {"name":"spr_vignette","order":11,"path":"sprites/spr_vignette/spr_vignette.yy",},
+    {"name":"spr_window_mat","order":10,"path":"sprites/spr_window_mat/spr_window_mat.yy",},
   ],
 }
