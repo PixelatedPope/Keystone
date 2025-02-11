@@ -296,12 +296,13 @@ function keystone_post_draw(_surf = KEYSTONE_APP_SURF){
     var _win = {x1: 0, y1: 0, x2: KEYSTONE_WIN_W, y2: KEYSTONE_WIN_H, width: KEYSTONE_WIN_W, height: KEYSTONE_WIN_H}
     global.__keystone_mat_func(_win, _app_surf);
   }
-
+  gpu_set_blendenable(false)
   if(KEYSTONE_SETTINGS.is_perfect_scale){
     draw_surface_stretched(_surf, _app_surf.x1, _app_surf.y1, _app_surf.width, _app_surf.height);
   } else {
     __surface_draw_filtered(_surf,KEYSTONE_SETTINGS.enable_filtering)
   }
+  gpu_set_blendenable(true)
 }
 
 ///@func keystone_draw_gui_begin()

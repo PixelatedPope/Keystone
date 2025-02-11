@@ -1,5 +1,9 @@
 /// @description
 //Define or Load your Keystone settings
+if(instance_number(object_index) > 1) {
+  throw($"A second instance of {object_get_name(object_index)} was created.");
+}
+
 var _settings = new KeystoneSettings(256, 222);
 _settings.is_borderless = false;
 _settings.is_fullscreen = false;

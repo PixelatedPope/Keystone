@@ -103,8 +103,7 @@ Keystone is a tool to help make your game look its best on any monitor! With a v
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Keystone is easy to add to your project.
 
 ### Installation
 
