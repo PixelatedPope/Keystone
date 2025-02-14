@@ -235,7 +235,7 @@ function keystone_update_borderless(){
 ///Will resize the keystone gui surface based on the current settings.
 function keystone_update_gui_scale(){
   var _scale = KEYSTONE_SETTINGS.gui_scale;
-  _scale = clamp(_scale, 1, keystone_get_max_window_scale());
+  _scale = clamp(_scale, 1, __calculate_max_window_scale());
   if(KEYSTONE_BASE_W * _scale == KEYSTONE_GUI_W && KEYSTONE_BASE_H * _scale == KEYSTONE_GUI_H) return;
 
   camera_set_view_size(global.__keystone_gui_cam, KEYSTONE_BASE_W * _scale, KEYSTONE_BASE_H * _scale);
@@ -249,7 +249,7 @@ function keystone_update_gui_scale(){
 function keystone_update_resolution(){
   var _scale = KEYSTONE_SETTINGS.resolution;
   if(_scale == KEYSTONE_AUTO_MAX) 
-    _scale = keystone_get_max_window_scale()
+    _scale = __calculate_max_window_scale()
   _scale = clamp(_scale, 1, KEYSTONE_SETTINGS.resolution_max == KEYSTONE_AUTO_MAX ? infinity : KEYSTONE_SETTINGS.resolution_max);
   var _w = KEYSTONE_BASE_W * _scale;
   var _h = KEYSTONE_BASE_H * _scale;
