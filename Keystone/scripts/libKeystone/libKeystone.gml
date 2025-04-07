@@ -1,5 +1,4 @@
-
-//@func KeystoneSettings()
+///@func KeystoneSettings(base width, base height)
 function KeystoneSettings(_base_w, _base_h) constructor {
   //There are no functions in here to keep it easily serializable
   base_width = _base_w;
@@ -72,6 +71,7 @@ function KeystoneBounds(_x1, _y1, _x2 = undefined, _y2 = undefined, _width = und
 #macro KEYSTONE_WIN_W window_get_width()
 #macro KEYSTONE_WIN_H window_get_height()
 #macro KEYSTONE_WIN_ASPECT (KEYSTONE_WIN_W / KEYSTONE_WIN_H)
+#endregion
 
 #region PRIVATE GLOBAL VARIABLES
 __keystone_settings = new KeystoneSettings(640, 360)
