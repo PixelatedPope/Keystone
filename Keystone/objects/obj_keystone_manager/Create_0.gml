@@ -10,4 +10,5 @@ _settings.is_fullscreen = false;
 _settings.is_perfect_scale = true;
 _settings.should_show_window_mat = true;
 _settings.window_scale = 3;
+_settings.gui_scale = 3;
 keystone_create(_settings)
